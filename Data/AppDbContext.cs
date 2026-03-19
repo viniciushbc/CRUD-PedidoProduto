@@ -8,9 +8,9 @@ public class AppDbContext : DbContext {
 
     // DbSet é o modulo do EF Core que representa uma tabela
     // Criando tabelas onde cada linha corresponde a um Objeto
-    public DbSet<Pedido> Pedidos {get; set;};
-    public DbSet<Produto> Produtos {get;set;};
-    public DbSet<PedidoProduto> PedidosProdutos {get;set;};
+    public DbSet<Pedido> Pedidos {get; set;}
+    public DbSet<Produto> Produtos {get;set;}
+    public DbSet<PedidoProduto> PedidosProdutos {get;set;}
 
     // Recebe a configuração de conexão com o banco e repassa pra classe pai do EF Core (DbContext)
     public AppDbContext(DbContextOptions<AppDbContext> options)  : base(options) {
