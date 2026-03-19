@@ -1,8 +1,21 @@
+using CrudPedidoProduto.Data;
+using Microsoft.EntityFrameworkCore;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+// Puxa lá no appsettings.json
+var StringConexao = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<AppDbContext>(
+    options => options.UseNpgsql(StringConexao)
+);
+
+
 
 var app = builder.Build();
 
