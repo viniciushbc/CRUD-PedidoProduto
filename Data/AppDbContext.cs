@@ -35,7 +35,7 @@ public class AppDbContext : DbContext {
         // Estou conectando isso na tabela PedidoProduto através da chave estrangeira ProdutoId
         modelBuilder.Entity<PedidoProduto>()
             .HasOne(pp => pp.Produto)
-            .WithMany(p => p.PedidosProdutos)
+            .WithMany()
             .HasForeignKey(pp => pp.ProdutoId);
     }
 }
