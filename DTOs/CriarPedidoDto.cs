@@ -1,9 +1,8 @@
 namespace CrudPedidoProduto.DTOs {
 
-    // Vai ser usado no request do POST de pedidos
+    // Vai ser usado no request do POST de PedidosS
     
     public class CriarPedidoDto {
-        public ICollection<PedidoProduto> PedidosProdutos {get;set;} = new List<PedidoProduto>();
+        public List<CriarPedidoItemDto> Itens {get;set;} = new List<CriarPedidoItemDto>();
     }
-
 }
