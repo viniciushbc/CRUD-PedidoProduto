@@ -165,9 +165,56 @@ using CrudPedidoProduto.Models;
         }
 
 
-        // Endpoint PUT /pedidos
+        // Endpoint PUT /pedidos:id
         public RespostaPedidoDto? AtualizarPedido(CriarPedidoDto pedido, int id){
+            
+            // Precisa validar de novo
+            if((ValidarQuantidadeItens(pedido)) && (ValidarValorTotal(pedido))){
 
+                var pedidoAcessado = AcessoAoDB.Pedidos
+                    .Include(pedido => pedido.PedidosProdutos)
+                    .ThenInclude(pedidoProduto => pedidoProduto.Produto)
+                    .FirstOrDefault(pedido => pedido.Id == id);
+            
+                if (pedidoAcessado == null) {
+                    return null;
+                }
+
+                // Remover os itens antigos
+                AcessoAoDB.PedidosProdutos.RemoveRange(pedidoAcessado.PedidosProdutos);
+
+                // Adição dos novos itens
+                pedidoAcessado.PedidosProdutos = pedido.Itens.Select(item => new PedidoProduto {
+                    ProdutoId = item.ProdutoId,
+                    Quantidade = item.Quantidade
+                }).ToList();
+
+                AcessoAoDB.SaveChanges();
+
+                return ListarPedidoPorId(pedidoAcessado.Id);
+                
+            } else {
+                return null;
+            }
+
+        }
+
+
+
+        // Endpoint DELETE /pedidos:id
+        public bool DeletarPedido(int id){
+
+            // Find() devolve PedidosProdutos == null, mas nesse caso não faz diferença    
+            var pedidoAcessado = AcessoAoDB.Pedidos.Find(id);
+
+            if (pedidoAcessado == null) {
+                return false;
+            }
+
+            AcessoAoDB.Pedidos.Remove(pedidoAcessado);
+            AcessoAoDB.SaveChanges();
+
+            return true;
         }
 
     }
