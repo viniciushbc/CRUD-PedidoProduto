@@ -63,7 +63,7 @@ public class ProdutoService {
         }
     }
 
-    // Endpoint PUT /produtos
+    // Endpoint PUT /produtos:id
     public RespostaProdutoDto? AtualizarProduto(CriarProdutoDto novoProduto, int id){
 
         var ProdutoAntigo = AcessoAoDB.Produtos.Find(id);
