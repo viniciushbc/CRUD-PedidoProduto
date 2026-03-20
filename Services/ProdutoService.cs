@@ -51,7 +51,7 @@ public class ProdutoService {
             // Id = XX, O id é gerado automaticamente pelo banco
             Nome = produto.Nome,
             Preco = produto.Preco
-        }
+        };
 
         AcessoAoDB.Produtos.Add(NovoProduto);
         AcessoAoDB.SaveChanges();
@@ -60,7 +60,7 @@ public class ProdutoService {
             Id = NovoProduto.Id,
             Nome = NovoProduto.Nome,
             Preco = NovoProduto.Preco,
-        }
+        };
     }
 
     // Endpoint PUT /produtos:id
