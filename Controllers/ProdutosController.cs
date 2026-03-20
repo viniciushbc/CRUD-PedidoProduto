@@ -42,12 +42,38 @@ namespace CrudPedidoProduto.Controllers
 
 
     [HttpPost]
-    public IActionREsult CriarProduto(CriarProdutoDto produtoDto) {
+    public IActionResult CriarProduto(CriarProdutoDto produtoDto) {
         
         var Produto = produtoService.CriarProduto(produtoDto);
 
         return Ok(Produto);
 
+
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult AtualizarProduto(CriarProdutoDto novoProdutoDto, int id) {
+            
+        var Produto = produtoService.AtualizarProduto(novoProdutoDto, id);
+
+        if(Produto == null) {
+            return NotFound();
+        }
+
+        return Ok(Produto);
+
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeletarProduto(int id) {
+
+        var Resultado = produtoService.DeletarProduto(id);
+
+        if(Resultado == false) {
+            return NotFound(); // 404
+        }
+        
+        return NoContent(); // 204
 
     }
 
