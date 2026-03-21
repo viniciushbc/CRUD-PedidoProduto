@@ -143,25 +143,28 @@ using CrudPedidoProduto.Models;
         // Endpoint POST /pedidos
         public RespostaPedidoDto? CriarPedido(CriarPedidoDto pedido){
             
-            if((ValidarQuantidadeItens(pedido)) && (ValidarValorTotal(pedido))){
-                
-                var novoPedido = new Pedido {
-                    NumeroPedido = gerarNumeroPedido(),
-                    PedidosProdutos = pedido.Itens.Select(item => new PedidoProduto {
-                        ProdutoId = item.ProdutoId,
-                        Quantidade = item.Quantidade
-                    }).ToList()
-                };
-
-                AcessoAoDB.Pedidos.Add(novoPedido);
-                AcessoAoDB.SaveChanges();
-
-                return ListarPedidoPorId(novoPedido.Id);
-
-            } else {
+            if(!ValidarQuantidadeItens(pedido)){
+                Console.WriteLine("Pedido excede 5 itens.");
                 return null;
             }
 
+            if(!ValidarValorTotal(pedido)){
+                Console.WriteLine("Pedido excede 1000 reais.");
+                return null;
+            }
+
+            var novoPedido = new Pedido {
+                NumeroPedido = gerarNumeroPedido(),
+                PedidosProdutos = pedido.Itens.Select(item => new PedidoProduto {
+                    ProdutoId = item.ProdutoId,
+                    Quantidade = item.Quantidade
+                }).ToList()
+            };
+
+            AcessoAoDB.Pedidos.Add(novoPedido);
+            AcessoAoDB.SaveChanges();
+
+            return ListarPedidoPorId(novoPedido.Id);
         }
 
 
@@ -169,33 +172,39 @@ using CrudPedidoProduto.Models;
         public RespostaPedidoDto? AtualizarPedido(CriarPedidoDto pedido, int id){
             
             // Precisa validar de novo
-            if((ValidarQuantidadeItens(pedido)) && (ValidarValorTotal(pedido))){
-
-                var pedidoAcessado = AcessoAoDB.Pedidos
-                    .Include(pedido => pedido.PedidosProdutos)
-                    .ThenInclude(pedidoProduto => pedidoProduto.Produto)
-                    .FirstOrDefault(pedido => pedido.Id == id);
-            
-                if (pedidoAcessado == null) {
-                    return null;
-                }
-
-                // Remover os itens antigos
-                AcessoAoDB.PedidosProdutos.RemoveRange(pedidoAcessado.PedidosProdutos);
-
-                // Adição dos novos itens
-                pedidoAcessado.PedidosProdutos = pedido.Itens.Select(item => new PedidoProduto {
-                    ProdutoId = item.ProdutoId,
-                    Quantidade = item.Quantidade
-                }).ToList();
-
-                AcessoAoDB.SaveChanges();
-
-                return ListarPedidoPorId(pedidoAcessado.Id);
-                
-            } else {
+            if(!ValidarQuantidadeItens(pedido)){
+                Console.WriteLine("Pedido excede 5 itens.");
                 return null;
             }
+
+            if(!ValidarValorTotal(pedido)){
+                Console.WriteLine("Pedido excede 1000 reais.");
+                return null;
+            }
+
+            var pedidoAcessado = AcessoAoDB.Pedidos
+                .Include(pedido => pedido.PedidosProdutos)
+                .ThenInclude(pedidoProduto => pedidoProduto.Produto)
+                .FirstOrDefault(pedido => pedido.Id == id);
+            
+            if (pedidoAcessado == null) {
+                return null;
+            }
+
+            // Remover os itens antigos
+            AcessoAoDB.PedidosProdutos.RemoveRange(pedidoAcessado.PedidosProdutos);
+
+            // Adição dos novos itens
+            pedidoAcessado.PedidosProdutos = pedido.Itens.Select(item => new PedidoProduto {
+                ProdutoId = item.ProdutoId,
+                Quantidade = item.Quantidade
+            }).ToList();
+
+            AcessoAoDB.SaveChanges();
+
+            return ListarPedidoPorId(pedidoAcessado.Id);
+                
+             
 
         }
 
