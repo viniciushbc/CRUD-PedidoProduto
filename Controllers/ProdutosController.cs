@@ -7,7 +7,7 @@ namespace CrudPedidoProduto.Controllers
 {
     
     [ApiController]
-    [Route("/api/produtos")]
+    [Route("api/produtos")]
     public class ProdutosController : ControllerBase {
     
         private ProdutoService produtoService;
