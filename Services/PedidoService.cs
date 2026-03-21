@@ -10,7 +10,7 @@ using CrudPedidoProduto.Models;
 
         private AppDbContext AcessoAoDB;
 
-        public ProdutoService(AppDbContext Contexto){
+        public PedidoService(AppDbContext Contexto){
             AcessoAoDB = Contexto;
         }
 
@@ -29,7 +29,7 @@ using CrudPedidoProduto.Models;
                         Quantidade = PedidoProduto.Quantidade,
                         SubTotalItem = PedidoProduto.Produto.Preco * PedidoProduto.Quantidade
                     }).ToList(),
-                    ValorTotal = pedido.PedidosProdutos.Sum(PedidoProduto => PedidoProduto.Produto.Preco * PedidoProduto.Quantidade);
+                    ValorTotal = pedido.PedidosProdutos.Sum(PedidoProduto => PedidoProduto.Produto.Preco * PedidoProduto.Quantidade)
                 }).ToList();
         }
 
@@ -93,7 +93,7 @@ using CrudPedidoProduto.Models;
             // Valor total <= 1000
 
         private bool ValidarQuantidadeItens(CriarPedidoDto pedido) {
-            var quantidade = pedido.Count;
+            var quantidade = pedido.Itens.Count;
 
             if((quantidade <= 5) && (quantidade > 0)){
                 return true;
@@ -108,7 +108,7 @@ using CrudPedidoProduto.Models;
             decimal valorTotal = 0;
 
             foreach (var itemPedido in pedido.Itens) {
-                var produto = AcessoAoDB.Produto.Find(itemPedido.ProdutoId);
+                var produto = AcessoAoDB.Produtos.Find(itemPedido.ProdutoId);
 
                 if(produto == null){
                     return false;
