@@ -20,7 +20,8 @@ builder.Services.AddDbContext<AppDbContext>(
 builder.Services.AddScoped<ProdutoService>();
 builder.Services.AddScoped<PedidoService>();
 
-
+// Adicionando controllers
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -30,6 +31,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+
+app.MapControllers();
 app.UseHttpsRedirection();
 
 var summaries = new[]
