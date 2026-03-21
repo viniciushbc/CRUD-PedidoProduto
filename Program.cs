@@ -1,4 +1,5 @@
 using CrudPedidoProduto.Data;
+using CrudPedidoProduto.Services;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -14,6 +15,10 @@ var StringConexao = builder.Configuration.GetConnectionString("DefaultConnection
 builder.Services.AddDbContext<AppDbContext>(
     options => options.UseNpgsql(StringConexao)
 );
+
+// Adicionando os meus serviços
+builder.Services.AddScoped<ProdutoService>();
+builder.Services.AddScoped<PedidoService>();
 
 
 
