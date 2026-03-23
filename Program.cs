@@ -11,14 +11,28 @@ builder.Services.AddDbContext<AppDbContext>(
     options => options.UseNpgsql(StringConexao)
 );
 
-// Adicionando os meus serviços
+// Adicionando os serviços
 builder.Services.AddScoped<ProdutoService>();
 builder.Services.AddScoped<PedidoService>();
 
 // Adicionando controllers
 builder.Services.AddControllers();
 
+// Configuração do CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
+
+// Middlewares
+app.UseCors("AllowAngular");
 
 app.MapControllers();
 app.UseHttpsRedirection();
