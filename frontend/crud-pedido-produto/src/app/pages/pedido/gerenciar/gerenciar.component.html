@@ -1,0 +1,44 @@
+<p-table [value]="pedidos">
+  <ng-template pTemplate="header">
+    <!--Mesma logica do novoProduto, vou implementar no componente /editar-->
+    <p-button (click)="editar()">Novo Pedido</p-button>
+    <tr>
+      <th>ID</th>
+      <th>Número do Pedido</th>
+      <th>Qtd. Itens</th>
+      <th>Valor Total</th>
+      <th>Ações</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-pedido>
+    <tr>
+      <td>{{ pedido.id }}</td>
+      <td>{{ pedido.numeroPedido }}</td>
+      <td>{{ pedido.itens }}</td>
+      <td>{{ pedido.valorTotal }}</td>
+      <td>
+        <p-button
+          icon="pi pi-eye"
+          severity="secondary"
+          [rounded]="true"
+          (click)="detalhes(pedido.id)">
+        </p-button>
+
+        <p-button
+          icon="pi pi-pencil"
+          severity="info"
+          [rounded]="true"
+          (click)="editar(pedido.id)">
+        </p-button>
+
+        <p-button
+          icon="pi pi-trash"
+          severity="danger"
+          [rounded]="true"
+          (click)="deletar(pedido.id)">
+        </p-button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
