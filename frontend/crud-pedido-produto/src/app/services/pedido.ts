@@ -22,7 +22,7 @@ export class PedidoService {
   }
 
   getPedidoPorNumeroPedido(numPedido: number){
-    return this.http.get(this.apiEndpoint + "/" + numPedido);
+    return this.http.get(this.apiEndpoint + "/filtro/" + numPedido);
   }
 
   postPedido(pedido: CriarPedidoDto){
