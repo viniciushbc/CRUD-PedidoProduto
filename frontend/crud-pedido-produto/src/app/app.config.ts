@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 
 import { providePrimeNG } from 'primeng/config';
-import Nora from '@primeng/themes/nora';
+import Aura from '@primeng/themes/aura';
 
 
 export const appConfig: ApplicationConfig = {
@@ -13,7 +13,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     providePrimeNG({
     theme: {
-        preset: Nora
+      preset: Aura,
+      options: {
+        darkModeSelector: false
+      }
     }
 })
   ]
