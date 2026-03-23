@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 // TELA(COMPONENTE) DE VISUALIZAR/EDITAR/REMOVER PRODUTOS
 
 @Component({
-  selector: 'app-gerenciar',
+  selector: 'app-gerenciar-produto',
   imports: [ButtonModule , TableModule],
   templateUrl: './gerenciar.component.html',
   styleUrl: './gerenciar.component.css',
