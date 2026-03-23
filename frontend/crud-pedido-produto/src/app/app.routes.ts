@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { GerenciarProduto } from './pages/produto/gerenciar/gerenciar';
-import { EditarProduto } from './pages/produto/editar/editar';
+import { GerenciarProduto } from './pages/produto/gerenciar/gerenciar.component';
+import { EditarProduto } from './pages/produto/editar/editar.component';
 
 export const routes: Routes = [
     // Produto

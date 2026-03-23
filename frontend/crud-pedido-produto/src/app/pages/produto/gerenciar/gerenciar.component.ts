@@ -1,5 +1,5 @@
 import { Component, inject, ChangeDetectorRef } from '@angular/core';
-import { ProdutoService } from '../../../services/produto';
+import { ProdutoService } from '../../../services/produto.service';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-gerenciar',
   imports: [ButtonModule , TableModule],
-  templateUrl: './gerenciar.html',
-  styleUrl: './gerenciar.css',
+  templateUrl: './gerenciar.component.html',
+  styleUrl: './gerenciar.component.css',
 })
 
 

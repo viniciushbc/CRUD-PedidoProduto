@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ProdutoService } from '../../../services/produto';
+import { ProdutoService } from '../../../services/produto.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { CriarProdutoDto } from '../../../models/produto.model';
@@ -9,8 +9,8 @@ import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-editar',
   imports: [ReactiveFormsModule, ButtonModule],
-  templateUrl: './editar.html',
-  styleUrl: './editar.css',
+  templateUrl: './editar.component.html',
+  styleUrl: './editar.component.css',
 })
 export class EditarProduto {
   private produtoService = inject(ProdutoService);
