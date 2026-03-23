@@ -1,6 +1,7 @@
-<p>gerenciar works!</p>
+<!-- "importanto" a variável *produtos* do gerenciar.ts -->
 <p-table [value]="produtos">
   <ng-template pTemplate="header">
+    <p-button (click)="editar()">Novo Produto</p-button>
     <tr>
       <th>Nome</th>
       <th>Preço</th>
@@ -8,12 +9,15 @@
     </tr>
   </ng-template>
   
+  <!-- Crio a variavel *produto* pra cada item de *produtos*-->
   <ng-template pTemplate="body" let-produto>
     <tr>
-      <td>{{ produto.nome }}</td>
-      <td>{{ produto.preco }}</td>
+      <td>{{ produto.nome }}</td> <!-- Coluna Nome da tabela-->
+      <td>{{ produto.preco }}</td> <!--Coluna preço da tabela-->
       <td>
-        <!-- botões editar/deletar vão aqui -->
+        <!-- botões editar/deletar -->
+        <p-button icon="pi pi-pencil" severity="info" [rounded]="true" (click)="editar(produto.id)"></p-button>
+        <p-button icon="pi pi-trash" severity="danger" [rounded]="true" (click)="deletar(produto.id)"></p-button>
       </td>
     </tr>
   </ng-template>
