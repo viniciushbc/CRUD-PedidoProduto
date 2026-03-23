@@ -1,0 +1,26 @@
+<!-- Se receber o ID, aparece "Editar" senão "Novo" -->
+<h2>{{ id ? 'Editar Produto' : 'Novo Produto' }}</h2>
+<form [formGroup]="formReativo" (ngSubmit)="salvar()">
+  
+  <div>
+    <label for="nome">Nome</label>
+    <input pInputText id="nome" formControlName="nome" />
+    @if (formReativo.get('nome')?.invalid && formReativo.get('nome')?.touched) {
+      <small class="erro">Nome é obrigatório</small>
+    }
+  </div>
+
+  <div>
+    <label for="preco">Preço</label>
+    <input pInputText id="preco" type="number" formControlName="preco" />
+    @if (formReativo.get('preco')?.hasError('min') && formReativo.get('preco')?.touched) {
+      <small class="erro">Preço deve ser pelo menos R$1</small>
+    }
+  </div>
+
+  <div>
+    <p-button label="Salvar" type="submit" [disabled]="formReativo.invalid"></p-button>
+    <p-button label="Cancelar" severity="secondary" (click)="cancelar()"></p-button>
+  </div>
+
+</form>
