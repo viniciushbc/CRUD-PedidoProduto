@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CriarProdutoDto } from '../models/produto.model';
+import { CriarProdutoDto, RespostaProdutoDto } from '../models/produto.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,23 +13,25 @@ export class ProdutoService {
 
 
   // Verbos HTTP
+  // Uso das interfaces pra evitar erro de tipagem
+
   getProdutos(){
-    return this.http.get(this.apiEndpoint);
+    return this.http.get<RespostaProdutoDto[]>(this.apiEndpoint);
   }
 
   getProdutoPorId(id: number) {
-    return this.http.get(this.apiEndpoint + "/" + id);
+    return this.http.get<RespostaProdutoDto>(this.apiEndpoint + "/" + id);
   }
 
   postProduto(produto: CriarProdutoDto){
-    return this.http.post(this.apiEndpoint, produto);
+    return this.http.post<RespostaProdutoDto>(this.apiEndpoint, produto);
   }
 
   putProduto(produto: CriarProdutoDto, id: number){
-    return this.http.put(this.apiEndpoint + "/" + id, produto);
+    return this.http.put<RespostaProdutoDto>(this.apiEndpoint + "/" + id, produto);
   }
 
   deleteProduto(id: number) {
-    return this.http.delete(this.apiEndpoint + "/" + id);
+    return this.http.delete<boolean>(this.apiEndpoint + "/" + id);
   }
 }
