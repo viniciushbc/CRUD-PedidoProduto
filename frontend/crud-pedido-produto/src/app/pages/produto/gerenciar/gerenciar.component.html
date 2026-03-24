@@ -1,25 +1,65 @@
-<!-- "importanto" a variável *produtos* do gerenciar.component.ts -->
-<p-table [value]="produtos">
-  <ng-template pTemplate="header">
-    <p-button (click)="editar()">Novo Produto</p-button>
-    <p-button (click)="acessarPedidos()">Pedidos</p-button>
-    <tr>
-      <th>Nome</th>
-      <th>Preço</th>
-      <th>Ações</th>
-    </tr>
-  </ng-template>
-  
-  <!-- Crio a variavel *produto* pra cada item de *produtos*-->
-  <ng-template pTemplate="body" let-produto>
-    <tr>
-      <td>{{ produto.nome }}</td> <!-- Coluna Nome da tabela-->
-      <td>{{ produto.preco }}</td> <!--Coluna preço da tabela-->
-      <td>
-        <!-- botões editar/deletar -->
-        <p-button icon="pi pi-pencil" severity="info" [rounded]="true" (click)="editar(produto.id)"></p-button>
-        <p-button icon="pi pi-trash" severity="danger" [rounded]="true" (click)="deletar(produto.id)"></p-button>
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
+<section class="page-shell">
+  <header class="page-header">
+    <div>
+      <span class="page-eyebrow">Produtos</span>
+      <h1>Gerenciar produtos</h1>
+      <p>Cadastre, atualize e remova os produtos disponiveis para os pedidos.</p>
+    </div>
+
+    <div class="page-actions">
+      <p-button
+        label="Pedidos"
+        icon="pi pi-shopping-cart"
+        severity="secondary"
+        (click)="acessarPedidos()">
+      </p-button>
+
+      <p-button
+        label="Novo Produto"
+        icon="pi pi-plus"
+        (click)="editar()">
+      </p-button>
+    </div>
+  </header>
+
+  <div class="card-surface">
+    <!-- "importanto" a variavel *produtos* do gerenciar.component.ts -->
+    <p-table [value]="produtos" [stripedRows]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nome</th>
+          <th>Preco</th>
+          <th class="coluna-acoes">Acoes</th>
+        </tr>
+      </ng-template>
+
+      <!-- Crio a variavel *produto* pra cada item de *produtos*-->
+      <ng-template pTemplate="body" let-produto>
+        <tr>
+          <td>{{ produto.nome }}</td> <!-- Coluna Nome da tabela-->
+          <td>R$ {{ produto.preco }}</td> <!--Coluna preco da tabela-->
+          <td>
+            <div class="action-buttons">
+              <!-- botoes editar/deletar -->
+              <p-button
+                icon="pi pi-pencil"
+                styleClass="btn-edit"
+                [rounded]="true"
+                [outlined]="true"
+                (click)="editar(produto.id)">
+              </p-button>
+
+              <p-button
+                icon="pi pi-trash"
+                severity="danger"
+                [rounded]="true"
+                [outlined]="true"
+                (click)="deletar(produto.id)">
+              </p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</section>
