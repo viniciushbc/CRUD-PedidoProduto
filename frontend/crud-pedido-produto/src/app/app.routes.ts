@@ -11,7 +11,9 @@ export const routes: Routes = [
     {path: 'produtos/editar/:id', component: EditarProduto}, // Formulario de criacao/edicao de produto
     
     // Pedido
-    {path: 'pedidos', component: GerenciarPedido}, // Pagina de pedidos
+    {path: '', component: GerenciarPedido}, // HOME PAGE
+    {path: 'pedidos', component: GerenciarPedido} // Pagina de pedidos
+
     //{path: 'pedidos/editar',}
 
 ];
