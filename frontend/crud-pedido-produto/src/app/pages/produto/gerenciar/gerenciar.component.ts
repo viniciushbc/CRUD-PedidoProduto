@@ -35,6 +35,10 @@ export class GerenciarProduto {
     });
   }
 
+  acessarPedidos(){
+    this.router.navigate(['/pedidos']);
+  }
+
   // DELETAR PRODUTO
   deletar(id: number){
     this.produtoService.deleteProduto(id).subscribe( () => {
