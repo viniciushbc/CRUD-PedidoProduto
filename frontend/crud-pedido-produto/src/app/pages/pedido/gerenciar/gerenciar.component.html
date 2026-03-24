@@ -15,8 +15,8 @@
     <tr>
       <td>{{ pedido.id }}</td>
       <td>{{ pedido.numeroPedido }}</td>
-      <td>{{ pedido.itens }}</td>
-      <td>{{ pedido.valorTotal }}</td>
+      <td>{{ pedido.itens.length }}</td>
+      <td>R$ {{ pedido.valorTotal }}</td>
       <td>
         <p-button
           icon="pi pi-eye"
