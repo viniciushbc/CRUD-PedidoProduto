@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { GerenciarProduto } from './pages/produto/gerenciar/gerenciar.component';
 import { EditarProduto } from './pages/produto/editar/editar.component';
+import { EditarPedido } from './pages/pedido/editar/editar.component';
 import { GerenciarPedido } from './pages/pedido/gerenciar/gerenciar.component';
 
 
@@ -12,7 +13,9 @@ export const routes: Routes = [
     
     // Pedido
     {path: '', component: GerenciarPedido}, // HOME PAGE
-    {path: 'pedidos', component: GerenciarPedido} // Pagina de pedidos
+    {path: 'pedidos', component: GerenciarPedido}, // Pagina de pedidos
+    {path: 'pedidos/editar', component: EditarPedido},
+    {path: 'pedidos/editar/:id', component: EditarPedido}
 
     //{path: 'pedidos/editar',}
 
