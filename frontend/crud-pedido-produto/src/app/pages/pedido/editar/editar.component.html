@@ -1,49 +1,112 @@
 @if (!produtosCarregados) {
-  <p-progressSpinner
-    strokeWidth="4"
-    fill="transparent"
-    animationDuration=".8s">
-  </p-progressSpinner>
-} @else {
-  <form [formGroup]="formReativo" (ngSubmit)="salvar()">
-    <div formArrayName="itens">
-      @for (item of itensDoPedido.controls; track item; let i = $index) {
-        <div [formGroupName]="i">
-          <label for="produto-{{ i }}">Produto</label>
-          <select id="produto-{{ i }}" formControlName="produtoId">
-            <option [ngValue]="null">Selecione</option>
-            @for (produto of produtos; track produto.id) {
-              <option [ngValue]="produto.id">
-                {{ produto.nome }} - R$ {{ produto.preco }}
-              </option>
-            }
-          </select>
-
-          <label for="quantidade-{{ i }}">Quantidade</label>
-          <input
-            id="quantidade-{{ i }}"
-            type="number"
-            formControlName="quantidade"
-            min="1"
-          />
-
-          <button type="button" (click)="removerItemDoPedido(i)">
-            Remover
-          </button>
-        </div>
-      }
+  <section class="page-shell loading-shell">
+    <div class="card-surface loading-card">
+      <p-progressSpinner
+        strokeWidth="4"
+        fill="transparent"
+        animationDuration=".8s">
+      </p-progressSpinner>
     </div>
+  </section>
+} @else {
+  <section class="page-shell">
+    <header class="page-header">
+      <div>
+        <span class="page-eyebrow">Pedidos</span>
+        <h1>{{ id ? 'Editar pedido' : 'Novo pedido' }}</h1>
+        <p>{{ id ? 'Atualize os itens do pedido selecionado.' : 'Selecione os produtos e as quantidades para criar um novo pedido.' }}</p>
+      </div>
+    </header>
 
-    <button type="button" (click)="adicionarItemAoPedido()">
-      Adicionar item
-    </button>
+    <div class="card-surface form-card">
+      <form class="page-form" [formGroup]="formReativo" (ngSubmit)="salvar()">
+        @if (mensagemErro) {
+          <small class="erro">{{ mensagemErro }}</small>
+        }
 
-    <button type="submit">
-      Salvar pedido
-    </button>
+        <div class="item-list" formArrayName="itens">
+          @for (item of itensDoPedido.controls; track item; let i = $index) {
+            <div class="item-card" [formGroupName]="i">
+              <div class="item-card-header">
+                <div>
+                  <span class="page-eyebrow">Item {{ i + 1 }}</span>
+                </div>
 
-    <button type="button" (click)="cancelar()">
-      Cancelar
-    </button>
-  </form>
+                <p-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  [outlined]="true"
+                  type="button"
+                  (click)="removerItemDoPedido(i)">
+                </p-button>
+              </div>
+
+              <div class="field-grid">
+                <div class="form-field">
+                  <label for="produto-{{ i }}">Produto</label>
+                  <p-autocomplete
+                    inputId="produto-{{ i }}"
+                    formControlName="produto"
+                    [suggestions]="produtosFiltradosPorItem[i]"
+                    (completeMethod)="filtrarProdutos($event, i)"
+                    optionLabel="nome"
+                    [forceSelection]="true"
+                    [dropdown]="true"
+                    dropdownMode="blank"
+                    placeholder="Selecione um produto">
+                  </p-autocomplete>
+
+                  @if (item.get('produto')?.invalid && item.get('produto')?.touched) {
+                    <small class="erro">Selecione um produto valido</small>
+                  }
+                </div>
+
+                <div class="form-field form-field-sm">
+                  <label for="quantidade-{{ i }}">Quantidade</label>
+                  <p-inputnumber
+                    inputId="quantidade-{{ i }}"
+                    formControlName="quantidade"
+                    [min]="1"
+                    [showButtons]="true">
+                  </p-inputnumber>
+
+                  @if (item.get('quantidade')?.invalid && item.get('quantidade')?.touched) {
+                    <small class="erro">Quantidade deve ser pelo menos 1</small>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="form-actions form-actions-between">
+          <p-button
+            label="Adicionar item"
+            icon="pi pi-plus"
+            type="button"
+            severity="secondary"
+            [outlined]="true"
+            (click)="adicionarItemAoPedido()">
+          </p-button>
+
+          <div class="action-buttons">
+            <p-button
+              [label]="id ? 'Atualizar pedido' : 'Salvar pedido'"
+              [icon]="id ? 'pi pi-refresh' : 'pi pi-check'"
+              type="submit">
+            </p-button>
+
+            <p-button
+              label="Cancelar"
+              icon="pi pi-times"
+              severity="secondary"
+              [outlined]="true"
+              type="button"
+              (click)="cancelar()">
+            </p-button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
 }
