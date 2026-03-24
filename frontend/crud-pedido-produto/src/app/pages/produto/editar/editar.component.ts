@@ -7,7 +7,7 @@ import { ButtonModule } from 'primeng/button';
 
 
 @Component({
-  selector: 'app-editar',
+  selector: 'app-editar-produto',
   imports: [ReactiveFormsModule, ButtonModule],
   templateUrl: './editar.component.html',
   styleUrl: './editar.component.css',
