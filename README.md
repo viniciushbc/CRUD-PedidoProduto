@@ -14,9 +14,11 @@ Esta versão publicada foi adaptada para funcionar direto no navegador, usando l
 ## Fluxo sugerido
 
 1. Acesse o projeto pelo link acima
-2. Cadastre um ou mais produtos
-3. Verifique a listagem de produtos cadastrados
-4. Acesse a tela de pedidos
-5. Crie um novo pedido utilizando os produtos cadastrados
-6. Consulte os detalhes do pedido criado
-7. Edite ou remova produtos e pedidos para testar o restante do CRUD
+2. Acesse a aba "Produtos"
+3. Cadastre um ou mais produtos
+4. Verifique a listagem de produtos cadastrados
+5. Acesse a aba "Pedidos"
+6. Crie um ou mais pedidos utilizando os produtos cadastrados
+7. Consulte os detalhes do pedido criado
+8. Aplique o filtro através do Numero do Pedido
+9. Edite ou remova produtos e pedidos para testar o restante do CRUD
