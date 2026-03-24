@@ -1,35 +1,64 @@
 @if (pedido) {
-  <div>
-    <h2>Detalhes do Pedido</h2>
+  <section class="page-shell">
+    <header class="page-header">
+      <div>
+        <span class="page-eyebrow">Pedidos</span>
+        <h1>Detalhes do pedido</h1>
+        <p>Confira os itens, quantidades e o valor total do pedido selecionado.</p>
+      </div>
 
-    <p><strong>ID:</strong> {{ pedido.id }}</p>
-    <p><strong>Número do pedido:</strong> {{ pedido.numeroPedido }}</p>
-    <p><strong>Valor total:</strong> R$ {{ pedido.valorTotal }}</p>
+      <div class="page-actions">
+        <p-button
+          label="Voltar para pedidos"
+          icon="pi pi-arrow-left"
+          severity="secondary"
+          [outlined]="true"
+          (click)="voltar()">
+        </p-button>
+      </div>
+    </header>
 
-    <h3>Itens</h3>
+    <div class="summary-grid">
+      <article class="card-surface summary-card">
+        <span class="summary-label">ID</span>
+        <strong>{{ pedido.id }}</strong>
+      </article>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Produto</th>
-          <th>Preço unidade</th>
-          <th>Quantidade</th>
-          <th>Subtotal</th>
-        </tr>
-      </thead>
+      <article class="card-surface summary-card">
+        <span class="summary-label">Numero do pedido</span>
+        <strong>{{ pedido.numeroPedido }}</strong>
+      </article>
 
-      <tbody>
-        @for (item of pedido.itens; track item.produtoNome) {
+      <article class="card-surface summary-card">
+        <span class="summary-label">Valor total</span>
+        <strong>R$ {{ pedido.valorTotal }}</strong>
+      </article>
+    </div>
+
+    <div class="card-surface">
+      <h3 class="section-title">Itens do pedido</h3>
+
+      <table class="details-table">
+        <thead>
           <tr>
-            <td>{{ item.produtoNome }}</td>
-            <td>R$ {{ item.precoUnidade }}</td>
-            <td>{{ item.quantidade }}</td>
-            <td>R$ {{ item.subTotalItem }}</td>
+            <th>Produto</th>
+            <th>Preco unidade</th>
+            <th>Quantidade</th>
+            <th>Subtotal</th>
           </tr>
-        }
-      </tbody>
-    </table>
+        </thead>
 
-    <p-button label="Voltar" (click)="voltar()"></p-button>
-  </div>
+        <tbody>
+          @for (item of pedido.itens; track item.produtoNome) {
+            <tr>
+              <td>{{ item.produtoNome }}</td>
+              <td>R$ {{ item.precoUnidade }}</td>
+              <td>{{ item.quantidade }}</td>
+              <td>R$ {{ item.subTotalItem }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
 }
