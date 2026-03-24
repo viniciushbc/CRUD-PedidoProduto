@@ -1,5 +1,6 @@
 import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { ProdutoService } from '../../../services/produto.service';
+import { RespostaProdutoDto } from '../../../models/produto.model';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
@@ -19,7 +20,7 @@ export class GerenciarProduto {
   private changeDetector = inject(ChangeDetectorRef);
   private router = inject(Router);
 
-  produtos: any[] = [];
+  produtos: RespostaProdutoDto[] = [];
 
   ngOnInit() {
     // subscribe agenda a minha requisição pra puxar todos os produtos
@@ -35,6 +36,7 @@ export class GerenciarProduto {
     });
   }
 
+  //redireciona pra pagina de pedidos
   acessarPedidos(){
     this.router.navigate(['/pedidos']);
   }
