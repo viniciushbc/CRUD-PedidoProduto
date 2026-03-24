@@ -1,3 +1,15 @@
+<input
+  pInputText
+  type="number"
+  [(ngModel)]="numeroPedidoFiltro"
+  placeholder="Número do pedido" />
+
+<p-button
+  label="Buscar"
+  (click)="filtroNumeroPedido()">
+</p-button>
+
+
 <p-table [value]="pedidos">
   <ng-template pTemplate="header">
     <!--Mesma logica do novoProduto, vou implementar no componente /editar-->
