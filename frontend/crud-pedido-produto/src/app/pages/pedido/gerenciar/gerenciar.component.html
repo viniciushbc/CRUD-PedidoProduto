@@ -1,57 +1,98 @@
-<input
-  pInputText
-  type="number"
-  [(ngModel)]="numeroPedidoFiltro"
-  placeholder="Número do pedido" />
+<section class="page-shell">
+  <header class="page-header">
+    <div>
+      <span class="page-eyebrow">Pedidos</span>
+      <h1>Gerenciar pedidos</h1>
+      <p>Consulte os pedidos cadastrados, filtre por numero e acompanhe os itens de cada venda.</p>
+    </div>
 
-<p-button
-  label="Buscar"
-  (click)="filtroNumeroPedido()">
-</p-button>
+    <div class="page-actions">
+      <p-button
+        label="Produtos"
+        icon="pi pi-box"
+        severity="secondary"
+        (click)="acessarProdutos()">
+      </p-button>
 
+      <p-button
+        label="Novo Pedido"
+        icon="pi pi-plus"
+        (click)="editar()">
+      </p-button>
+    </div>
+  </header>
 
-<p-table [value]="pedidos">
-  <ng-template pTemplate="header">
-    <!--Mesma logica do novoProduto, vou implementar no componente /editar-->
-    <p-button (click)="editar()">Novo Pedido</p-button>
-    <p-button (click)="acessarProdutos()">Produtos</p-button>
-    <tr>
-      <th>ID</th>
-      <th>Número do Pedido</th>
-      <th>Qtd. Itens</th>
-      <th>Valor Total</th>
-      <th>Ações</th>
-    </tr>
-  </ng-template>
+  <div class="card-surface">
+    <div class="filter-row">
+      <div class="filter-field">
+        <label for="numeroPedido">Pesquisar pedido</label>
+        <p-autocomplete
+          inputId="numeroPedido"
+          [(ngModel)]="numeroPedidoFiltro"
+          [suggestions]="sugestoesNumeroPedido"
+          (completeMethod)="filtrarPedidosPorNumero($event)"
+          optionLabel="numeroPedido"
+          [forceSelection]="true"
+          [dropdown]="true"
+          dropdownMode="blank"
+          placeholder="Digite o numero do pedido">
+        </p-autocomplete>
+      </div>
 
-  <ng-template pTemplate="body" let-pedido>
-    <tr>
-      <td>{{ pedido.id }}</td>
-      <td>{{ pedido.numeroPedido }}</td>
-      <td>{{ pedido.itens.length }}</td>
-      <td>R$ {{ pedido.valorTotal }}</td>
-      <td>
-        <p-button
-          icon="pi pi-eye"
-          severity="secondary"
-          [rounded]="true"
-          (click)="detalhes(pedido.id)">
-        </p-button>
+      <p-button
+        label="Buscar"
+        icon="pi pi-search"
+        type="button"
+        (click)="filtroNumeroPedido()">
+      </p-button>
+    </div>
 
-        <p-button
-          icon="pi pi-pencil"
-          severity="info"
-          [rounded]="true"
-          (click)="editar(pedido.id)">
-        </p-button>
+    <p-table [value]="pedidos" [stripedRows]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>ID</th>
+          <th>Numero do Pedido</th>
+          <th>Qtd. Itens</th>
+          <th>Valor Total</th>
+          <th class="coluna-acoes">Acoes</th>
+        </tr>
+      </ng-template>
 
-        <p-button
-          icon="pi pi-trash"
-          severity="danger"
-          [rounded]="true"
-          (click)="deletar(pedido.id)">
-        </p-button>
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
+      <ng-template pTemplate="body" let-pedido>
+        <tr>
+          <td>{{ pedido.id }}</td>
+          <td>{{ pedido.numeroPedido }}</td>
+          <td>{{ pedido.itens.length }}</td>
+          <td>R$ {{ pedido.valorTotal }}</td>
+          <td>
+            <div class="action-buttons">
+              <p-button
+                icon="pi pi-eye"
+                severity="secondary"
+                [rounded]="true"
+                [outlined]="true"
+                (click)="detalhes(pedido.id)">
+              </p-button>
+
+              <p-button
+                icon="pi pi-pencil"
+                styleClass="btn-edit"
+                [rounded]="true"
+                [outlined]="true"
+                (click)="editar(pedido.id)">
+              </p-button>
+
+              <p-button
+                icon="pi pi-trash"
+                severity="danger"
+                [rounded]="true"
+                [outlined]="true"
+                (click)="deletar(pedido.id)">
+              </p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</section>
