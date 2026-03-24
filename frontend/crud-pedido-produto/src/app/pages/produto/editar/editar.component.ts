@@ -4,11 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { CriarProdutoDto } from '../../../models/produto.model';
 import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 
 @Component({
   selector: 'app-editar-produto',
-  imports: [ReactiveFormsModule, ButtonModule],
+  imports: [ReactiveFormsModule, ButtonModule, InputTextModule, InputNumberModule],
   templateUrl: './editar.component.html',
   styleUrl: './editar.component.css',
 })
