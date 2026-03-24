@@ -1,0 +1,49 @@
+@if (!produtosCarregados) {
+  <p-progressSpinner
+    strokeWidth="4"
+    fill="transparent"
+    animationDuration=".8s">
+  </p-progressSpinner>
+} @else {
+  <form [formGroup]="formReativo" (ngSubmit)="salvar()">
+    <div formArrayName="itens">
+      @for (item of itensDoPedido.controls; track item; let i = $index) {
+        <div [formGroupName]="i">
+          <label for="produto-{{ i }}">Produto</label>
+          <select id="produto-{{ i }}" formControlName="produtoId">
+            <option [ngValue]="null">Selecione</option>
+            @for (produto of produtos; track produto.id) {
+              <option [ngValue]="produto.id">
+                {{ produto.nome }} - R$ {{ produto.preco }}
+              </option>
+            }
+          </select>
+
+          <label for="quantidade-{{ i }}">Quantidade</label>
+          <input
+            id="quantidade-{{ i }}"
+            type="number"
+            formControlName="quantidade"
+            min="1"
+          />
+
+          <button type="button" (click)="removerItemDoPedido(i)">
+            Remover
+          </button>
+        </div>
+      }
+    </div>
+
+    <button type="button" (click)="adicionarItemAoPedido()">
+      Adicionar item
+    </button>
+
+    <button type="submit">
+      Salvar pedido
+    </button>
+
+    <button type="button" (click)="cancelar()">
+      Cancelar
+    </button>
+  </form>
+}
