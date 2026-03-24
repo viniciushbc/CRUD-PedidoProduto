@@ -57,7 +57,7 @@
                   </p-autocomplete>
 
                   @if (item.get('produto')?.invalid && item.get('produto')?.touched) {
-                    <small class="erro">Selecione um produto valido</small>
+                    <small class="erro">Selecione um produto válido</small>
                   }
                 </div>
 
@@ -71,7 +71,7 @@
                   </p-inputnumber>
 
                   @if (item.get('quantidade')?.invalid && item.get('quantidade')?.touched) {
-                    <small class="erro">Quantidade deve ser pelo menos 1</small>
+                    <small class="erro">Quantidade mínima deve ser 1</small>
                   }
                 </div>
               </div>
