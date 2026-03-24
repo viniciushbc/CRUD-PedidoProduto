@@ -7,44 +7,36 @@ import { ReactiveFormsModule, FormGroup, FormControl, FormArray, Validators } fr
 import { ProdutoService } from '../../../services/produto.service';
 import { RespostaProdutoDto } from '../../../models/produto.model';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-
+import { AutoCompleteModule, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-editar-pedido',
-  imports: [ReactiveFormsModule, ButtonModule, ProgressSpinnerModule],
+  imports: [ReactiveFormsModule, ButtonModule, ProgressSpinnerModule, AutoCompleteModule, InputNumberModule],
   templateUrl: './editar.component.html',
   styleUrl: './editar.component.css',
 })
 
-
 export class EditarPedido {
 
-  // Serviços e dependências da página
   private pedidoService = inject(PedidoService);
   private produtoService = inject(ProdutoService);
   private changeDetector = inject(ChangeDetectorRef);
   private route = inject(ActivatedRoute);
-
   private router = inject(Router);
 
   // Controle da tela
   id: number | null = null;
   produtos: RespostaProdutoDto[] = [];
   produtosCarregados = false;
+  produtosFiltradosPorItem: RespostaProdutoDto[][] = [];
+  mensagemErro = '';
 
-  // Formulário do pedido
-  // "itens" é um FormArray porque o pedido pode ter vários produtos
-  // Cada posição do array representa uma linha do pedido
+  // Formulario do pedido
+  // "itens" é um FormArray porque o pedido pode ter varios produtos (array de produtos)
+  // Cada posição do array representa uma "linha/card" do pedido
   formReativo = new FormGroup({
-    itens: new FormArray([
-      new FormGroup({
-
-        produtoId: new FormControl<number | null>(null, Validators.required),
-
-        quantidade: new FormControl(1, [Validators.required, Validators.min(1),Validators.max(5)])
-        
-      })
-    ])
+    itens: new FormArray([])
   })
 
   ngOnInit(){
@@ -60,28 +52,27 @@ export class EditarPedido {
 
         this.pedidoService.getPedidoPorId(this.id).subscribe(pedido => {
           this.itensDoPedido.clear();
+          this.produtosFiltradosPorItem = [];
 
           pedido.itens.forEach(item => {
-            const produtoEncontrado = this.produtos.find(produto => produto.nome === item.produtoNome);
+            const produtoEncontrado = this.produtos.find(produto => produto.nome == item.produtoNome) ?? null;
 
-            this.itensDoPedido.push(
-              new FormGroup({
-                produtoId: new FormControl<number | null>(produtoEncontrado?.id ?? null, Validators.required),
-                quantidade: new FormControl(item.quantidade, [Validators.required, Validators.min(1), Validators.max(5)])
-              })
-            );
+            this.itensDoPedido.push(this.criarItemPedido(produtoEncontrado, item.quantidade));
+            this.produtosFiltradosPorItem.push([...this.produtos]);
           });
+
           this.produtosCarregados = true;
           this.changeDetector.detectChanges();
         });
         return;
       }
 
-      // libera a renderização do formulário depois que os produtos chegam
-      // fiz assim pq o select não estava renderizando...
+      this.adicionarItemAoPedido();
+
+      // libera a renderizacao depois que os produtos chegam no select
       this.produtosCarregados = true;
 
-      //força a atualização da tela após o subscribe
+      //força a atualizacao da tela dps do subscribe
       this.changeDetector.detectChanges();
     });
 
@@ -93,33 +84,76 @@ export class EditarPedido {
     return this.formReativo.get('itens') as FormArray;
   }
 
+  // Cria uma linha do pedido com o produto selecionado e quantidade
+  private criarItemPedido(produto: RespostaProdutoDto | null = null, quantidade = 1){
+    return new FormGroup({
+      produto: new FormControl<RespostaProdutoDto | null>(produto, Validators.required),
+      quantidade: new FormControl(quantidade, [Validators.required, Validators.min(1)])
+    })
+  }
+
   adicionarItemAoPedido(){
-    this.itensDoPedido.push(
-      new FormGroup({
-        produtoId: new FormControl<number | null>(null, Validators.required),
-        quantidade: new FormControl(1, [Validators.required, Validators.min(1)])
-      })
-    )
+    this.itensDoPedido.push(this.criarItemPedido());
+    this.produtosFiltradosPorItem.push([...this.produtos]);
   }
 
   removerItemDoPedido(index: number){
     this.itensDoPedido.removeAt(index);
+    this.produtosFiltradosPorItem.splice(index, 1);
   }
 
-  
+  // Filtra os produtos do AutoComplete conforme o usuário digita
+  // o event do primeNG que traz o texto digitado
+  filtrarProdutos(event: AutoCompleteCompleteEvent, index: number){
+    const query = event.query.trim().toLowerCase();
+
+    if(!query){
+      this.produtosFiltradosPorItem[index] = [...this.produtos];
+      return;
+    }
+
+    this.produtosFiltradosPorItem[index] = this.produtos.filter(produto =>
+      produto.nome.toLowerCase().includes(query)
+    );
+  }
+
   salvar(){
-    // Monta o body no formato da minha interface CriarProdutoDto
+    this.mensagemErro = '';
+
+    if(this.formReativo.invalid){
+      this.formReativo.markAllAsTouched();
+      return;
+    }
+
+    // Monta o body no formato da interface CriarPedidoDto
     const dadosPedido: CriarPedidoDto = {
-      itens: this.itensDoPedido.value
+      itens: this.itensDoPedido.controls.map(item => ({
+        produtoId: item.value.produto!.id,
+        quantidade: item.value.quantidade!
+      }))
     };
 
     if(this.id){
-      this.pedidoService.putPedido(dadosPedido, this.id).subscribe( () => {
-        this.router.navigate(['/pedidos']);
+      this.pedidoService.putPedido(dadosPedido, this.id).subscribe({
+        next: () => {
+          this.router.navigate(['/pedidos']);
+        },
+        error: () => {
+          // Exibe o erro do backend quando a regra de negocio do pedido falhar
+          this.mensagemErro = 'Nao foi possivel atualizar o pedido. Verifique as regras do pedido e tente novamente.';
+          this.changeDetector.detectChanges();
+        }
       })
     } else {
-      this.pedidoService.postPedido(dadosPedido).subscribe( () => {
-        this.router.navigate(['/pedidos']);
+      this.pedidoService.postPedido(dadosPedido).subscribe({
+        next: () => {
+          this.router.navigate(['/pedidos']);
+        },
+        error: () => {
+          // Exibe o erro do backend quando a regra de negocio do pedido falhar
+          this.mensagemErro = 'Nao foi possivel criar o pedido. Verifique as regras do pedido e tente novamente.';
+          this.changeDetector.detectChanges();
+        }
       })
     }
   }
@@ -127,6 +161,4 @@ export class EditarPedido {
   cancelar() {
     this.router.navigate(['/pedidos']);
   }
-
-
 }
