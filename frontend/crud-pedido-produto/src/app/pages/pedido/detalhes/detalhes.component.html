@@ -1,0 +1,35 @@
+@if (pedido) {
+  <div>
+    <h2>Detalhes do Pedido</h2>
+
+    <p><strong>ID:</strong> {{ pedido.id }}</p>
+    <p><strong>Número do pedido:</strong> {{ pedido.numeroPedido }}</p>
+    <p><strong>Valor total:</strong> R$ {{ pedido.valorTotal }}</p>
+
+    <h3>Itens</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Preço unidade</th>
+          <th>Quantidade</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (item of pedido.itens; track item.produtoNome) {
+          <tr>
+            <td>{{ item.produtoNome }}</td>
+            <td>R$ {{ item.precoUnidade }}</td>
+            <td>{{ item.quantidade }}</td>
+            <td>R$ {{ item.subTotalItem }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <p-button label="Voltar" (click)="voltar()"></p-button>
+  </div>
+}
