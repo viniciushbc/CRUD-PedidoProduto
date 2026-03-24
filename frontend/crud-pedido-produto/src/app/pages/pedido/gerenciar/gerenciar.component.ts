@@ -5,12 +5,13 @@ import { ButtonModule } from 'primeng/button';
 import { PedidoService } from '../../../services/pedido.service';
 import { RespostaPedidoDto } from '../../../models/pedido.model';
 import { FormsModule } from '@angular/forms';
+import { AutoCompleteModule, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 
 
 
 @Component({
   selector: 'app-gerenciar-pedido',
-  imports: [TableModule, ButtonModule, FormsModule],
+  imports: [TableModule, ButtonModule, FormsModule, AutoCompleteModule],
   templateUrl: './gerenciar.component.html',
   styleUrl: './gerenciar.component.css',
 })
@@ -24,7 +25,9 @@ export class GerenciarPedido {
   private router = inject(Router);
 
   pedidos: RespostaPedidoDto[] = [];
-  numeroPedidoFiltro: number | null = null;
+  todosPedidos: RespostaPedidoDto[] = [];
+  numeroPedidoFiltro: RespostaPedidoDto | null = null;
+  sugestoesNumeroPedido: RespostaPedidoDto[] = [];
 
   ngOnInit(){
     this.visualizarPedidos();
@@ -34,6 +37,8 @@ export class GerenciarPedido {
   visualizarPedidos(){
     this.pedidoService.getPedidos().subscribe(data => {
       this.pedidos = data;
+      this.todosPedidos = data;
+      this.sugestoesNumeroPedido = data;
       this.changeDetector.detectChanges();
     })
   }
@@ -70,7 +75,7 @@ export class GerenciarPedido {
       return;
     }
 
-    const numPedido = Number(this.numeroPedidoFiltro);
+    const numPedido = this.numeroPedidoFiltro.numeroPedido;
 
     this.pedidoService.getPedidoPorNumeroPedido(numPedido).subscribe({
       next: (pedido) => {
@@ -85,6 +90,20 @@ export class GerenciarPedido {
     })
 
 
+  }
+
+  // Sugestoes do AutoComplete a partir do numero do pedido
+  filtrarPedidosPorNumero(event: AutoCompleteCompleteEvent){
+    const query = event.query.trim().toLowerCase();
+
+    if(!query){
+      this.sugestoesNumeroPedido = [...this.todosPedidos];
+      return;
+    }
+
+    this.sugestoesNumeroPedido = this.todosPedidos.filter(pedido =>
+      pedido.numeroPedido.toString().includes(query)
+    );
   }
 
 
