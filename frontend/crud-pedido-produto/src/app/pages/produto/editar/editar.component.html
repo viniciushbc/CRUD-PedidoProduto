@@ -1,26 +1,57 @@
-<!-- Se receber o ID, aparece "Editar" senão "Novo" -->
-<h2>{{ id ? 'Editar Produto' : 'Novo Produto' }}</h2>
-<form [formGroup]="formReativo" (ngSubmit)="salvar()">
-  
-  <div>
-    <label for="nome">Nome</label>
-    <input pInputText id="nome" formControlName="nome" />
-    @if (formReativo.get('nome')?.invalid && formReativo.get('nome')?.touched) {
-      <small class="erro">Nome é obrigatório</small>
-    }
-  </div>
+<section class="page-shell">
+  <header class="page-header">
+    <div>
+      <span class="page-eyebrow">Produtos</span>
+      <h1>{{ id ? 'Editar produto' : 'Novo produto' }}</h1>
+      <p>{{ id ? 'Atualize as informações do produto selecionado.' : 'Preencha os campos para cadastrar um novo produto.' }}</p>
+    </div>
+  </header>
 
-  <div>
-    <label for="preco">Preço</label>
-    <input pInputText id="preco" type="number" formControlName="preco" />
-    @if (formReativo.get('preco')?.hasError('min') && formReativo.get('preco')?.touched) {
-      <small class="erro">Preço deve ser pelo menos R$1</small>
-    }
-  </div>
+  <div class="card-surface form-card">
+    <form class="page-form" [formGroup]="formReativo" (ngSubmit)="salvar()">
 
-  <div>
-    <p-button label="Salvar" type="submit" [disabled]="formReativo.invalid"></p-button>
-    <p-button label="Cancelar" severity="secondary" (click)="cancelar()"></p-button>
-  </div>
+      <div class="field-grid">
+        <div class="form-field">
+          <label for="nome">Nome</label>
+          <input pInputText id="nome" formControlName="nome" />
+          @if (formReativo.get('nome')?.invalid && formReativo.get('nome')?.touched) {
+            <small class="erro">Nome é obrigatorio</small>
+          }
+        </div>
 
-</form>
+        <div class="form-field">
+          <label for="preco">Preço</label>
+          <p-inputnumber
+            inputId="preco"
+            formControlName="preco"
+            mode="currency"
+            currency="BRL"
+            locale="pt-BR">
+          </p-inputnumber>
+
+          @if (formReativo.get('preco')?.hasError('min') && formReativo.get('preco')?.touched) {
+            <small class="erro">Preço deve ser de pelo menos R$ 1,00</small>
+          }
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <p-button
+          [label]="id ? 'Atualizar produto' : 'Salvar produto'"
+          [icon]="id ? 'pi pi-refresh' : 'pi pi-check'"
+          type="submit"
+          [disabled]="formReativo.invalid">
+        </p-button>
+
+        <p-button
+          label="Cancelar"
+          icon="pi pi-times"
+          severity="secondary"
+          [outlined]="true"
+          type="button"
+          (click)="cancelar()">
+        </p-button>
+      </div>
+    </form>
+  </div>
+</section>
