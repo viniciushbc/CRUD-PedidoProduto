@@ -3,7 +3,7 @@ import { GerenciarProduto } from './pages/produto/gerenciar/gerenciar.component'
 import { EditarProduto } from './pages/produto/editar/editar.component';
 import { EditarPedido } from './pages/pedido/editar/editar.component';
 import { GerenciarPedido } from './pages/pedido/gerenciar/gerenciar.component';
-
+import { DetalhesPedido } from './pages/pedido/detalhes/detalhes.component';
 
 export const routes: Routes = [
     // Produto
@@ -14,9 +14,9 @@ export const routes: Routes = [
     // Pedido
     {path: '', component: GerenciarPedido}, // HOME PAGE
     {path: 'pedidos', component: GerenciarPedido}, // Pagina de pedidos
-    {path: 'pedidos/editar', component: EditarPedido},
-    {path: 'pedidos/editar/:id', component: EditarPedido}
-
+    {path: 'pedidos/editar', component: EditarPedido}, // Criar um pedido
+    {path: 'pedidos/editar/:id', component: EditarPedido}, // Editar um pedido
+    {path: 'pedidos/detalhes/:id', component: DetalhesPedido} // Detalhes de um pedido
     //{path: 'pedidos/editar',}
 
 ];
