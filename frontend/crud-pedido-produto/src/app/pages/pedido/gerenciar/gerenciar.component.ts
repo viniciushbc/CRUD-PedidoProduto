@@ -38,6 +38,10 @@ export class GerenciarPedido {
     })
   }
 
+  acessarProdutos(){
+    this.router.navigate(['/produtos'])
+  }
+
 
   // Detalhes, produtos de um pedido
   detalhes(id: number){
